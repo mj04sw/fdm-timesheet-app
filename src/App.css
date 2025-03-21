@@ -1,45 +1,3 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
 /* General Reset */
 * {
   margin: 0;
@@ -50,47 +8,64 @@
 body {
   font-family: 'Arial', sans-serif;
   line-height: 1.6;
-  background-color: #222; /* Dark background for the body */
-  color: #ddd; /* Light text color for contrast */
+  background-color: #222;
+  color: #ddd;
+  padding-top: 70px;  /* Add top padding to avoid content being hidden behind the navbar */
 }
+
 
 /* Header */
 .header {
+  position: fixed;  /* Fix the navbar at the top */
+  top: 0;  /* Align to the top of the screen */
+  left: 0;  /* Align to the left of the screen */
+  right: 0; /* Stretch it across the full width */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
-  background-color: #333; /* Darker header background */
+  padding: 10px 20px;  /* Reduced padding for a more compact navbar */
+  background-color: #333; /* Dark header background */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Darker shadow */
+  z-index: 1000;  /* Ensure it stays above other content */
 }
 
 .header .logo {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #fff; /* Logo text in white */
+  color: #fff; /* White color for logo */
 }
 
-.header nav ul {
+/* Navbar buttons */
+.navbar-buttons {
   list-style: none;
-  display: flex;
+  display: flex; /* Makes the navbar items appear horizontally */
+  gap: 20px; /* Adds space between the buttons */
 }
 
-.header nav ul li {
-  margin: 0 15px;
-}
-
-.header nav ul li a {
-  text-decoration: none;
-  color: #ddd; /* Lighter text for links */
+.navbar-btn {
+  background-color: #4CAF50; /* Green background for the buttons */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
   font-weight: bold;
+  transition: background-color 0.3s;
 }
 
-.header nav ul li a:hover {
-  color: #fff; /* Change link color on hover */
+.navbar-btn:hover {
+  background-color: #45a049; /* Darker green on hover */
 }
 
+.navbar-btn:focus {
+  outline: none; /* Remove default focus outline */
+}
 
+.navbar-btn a {
+  text-decoration: none;
+  color: white; /* White text color in buttons */
+}
 
-
-
-
+.navbar-btn a:hover {
+  color: white; /* Keep the text white on hover */
+}
