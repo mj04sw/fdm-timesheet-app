@@ -9,6 +9,7 @@ import Timesheet from './pages/Timesheet';
 import AdminPanel from './pages/AdminPanel';
 import Navbar from './components/NavBar';
 
+// comment by milad for testing purposes.
 function App() {
   const [count, setCount] = useState(0);
 
