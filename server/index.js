@@ -1,37 +1,50 @@
-// index.js (backend)
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const { v4: uuidv4 } = require('uuid');
 
-// Use middleware
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Hardcoded users (you can expand this later with a database)
-const users = [
-  { id: 1, email: 'test1@example.com', password: 'password1', name: 'Test User 1' },
-  { id: 2, email: 'test2@example.com', password: 'password2', name: 'Test User 2' }
+// In-memory store for users and timesheets (for testing purposes)
+let users = [
+  { id: '1', email: 'test1@example.com', password: 'password1' },
+  { id: '2', email: 'test2@example.com', password: 'password2' },
 ];
 
-// Login route to authenticate users
-app.post('/api/login', (req, res) => {
-  const { email, password } = req.body;
+let timesheets = {}; // Store timesheets per user: { userId: [{...timesheet1}, {...timesheet2}] }
 
-  // Find the user by email
-  const user = users.find((u) => u.email === email);
+// Add a new timesheet for the authenticated user
+app.post('/api/timesheet', (req, res) => {
+  const { userId, dateRange } = req.body; // userId is sent with the request (you can get it from a JWT or session)
   
-  if (!user || user.password !== password) {
-    // Invalid credentials
-    return res.status(401).json({ error: 'Invalid email or password' });
+  // Create a new timesheet
+  const newTimesheet = {
+    id: uuidv4(),
+    dateRange,
+    entries: [],
+    status: 'Draft',
+    totalHours: 0,
+  };
+
+  if (!timesheets[userId]) {
+    timesheets[userId] = [];
   }
-
-  // Valid login, return user info and a fake token
-  const token = `fake-token-${user.id}`;  // In real applications, use JWT tokens
-  return res.json({ user: { id: user.id, email: user.email, name: user.name }, token });
+  
+  timesheets[userId].push(newTimesheet);
+  
+  res.status(201).json(newTimesheet);
 });
 
-// Start the server
+// Get a user's timesheets
+app.get('/api/timesheet/:userId', (req, res) => {
+  const { userId } = req.params;
+  const userTimesheets = timesheets[userId] || [];
+  res.json(userTimesheets);
+});
+
+// Other endpoints (login, etc.) would go here...
+
 const PORT = 5174;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
