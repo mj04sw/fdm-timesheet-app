@@ -12,7 +12,7 @@ const Login = () => {
     e.preventDefault();
     console.log("Login button clicked");
     try {
-      const response = await fetch("http://localhost:5174/api/login", {
+      const response = await fetch("http://localhost:5173/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -24,7 +24,7 @@ const Login = () => {
         const { user, token } = await response.json();
         console.log("Login successful", user, token);
         login(user, token);
-        navigate("/timesheet"); 
+        navigate("/"); // Redirect to the home page after successful login
       } else {
         console.error("Login failed:", response.statusText);
       }

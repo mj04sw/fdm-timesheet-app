@@ -1,27 +1,37 @@
-// filepath: c:\Users\Mathu\Documents\Software Engineering Group Project\FDM Timesheet App\fdm-timesheet-app\server\index.js
+// index.js (backend)
 const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-
 const app = express();
-app.use(cors());
-app.use(bodyParser.json());
+const cors = require('cors');
 
+// Use middleware
+app.use(cors());
+app.use(express.json());
+
+// Hardcoded users (you can expand this later with a database)
 const users = [
-  { email: 'test1@example.com', password: 'password1', user: { name: 'Test User 1' }, token: 'token1' },
-  { email: 'test2@example.com', password: 'password2', user: { name: 'Test User 2' }, token: 'token2' },
+  { id: 1, email: 'test1@example.com', password: 'password1', name: 'Test User 1' },
+  { id: 2, email: 'test2@example.com', password: 'password2', name: 'Test User 2' }
 ];
 
-app.post('/login', (req, res) => {
+// Login route to authenticate users
+app.post('/api/login', (req, res) => {
   const { email, password } = req.body;
-  const user = users.find(u => u.email === email && u.password === password);
-  if (user) {
-    res.json({ user: user.user, token: user.token });
-  } else {
-    res.status(401).json({ message: 'Invalid credentials' });
+
+  // Find the user by email
+  const user = users.find((u) => u.email === email);
+  
+  if (!user || user.password !== password) {
+    // Invalid credentials
+    return res.status(401).json({ error: 'Invalid email or password' });
   }
+
+  // Valid login, return user info and a fake token
+  const token = `fake-token-${user.id}`;  // In real applications, use JWT tokens
+  return res.json({ user: { id: user.id, email: user.email, name: user.name }, token });
 });
 
-app.listen(5173, () => {
-  console.log('Server is running on http://localhost:5173');
+// Start the server
+const PORT = 5174;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
